@@ -54,4 +54,9 @@ public class EtudiantRESTController {
     public List<Etudiant> getEtudiantsByFiliereId(@PathVariable("idFiliere") Long idFiliere) {
         return etudiantService.findByFiliereIdFiliere(idFiliere);
     }
+
+    @GetMapping("/etudsByName/{nom}")
+    public List<Etudiant> findByNomEtudiantContains(@PathVariable("nom") String nom) {
+        return etudiantService.findByNomEtudiantContains(nom);
+    }
 }

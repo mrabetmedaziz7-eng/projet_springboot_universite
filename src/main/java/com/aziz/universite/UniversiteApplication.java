@@ -6,6 +6,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import com.aziz.universite.entities.Etudiant;
+import com.aziz.universite.entities.Filiere;
 
 @SpringBootApplication
 public class UniversiteApplication implements CommandLineRunner {
@@ -19,6 +20,6 @@ public class UniversiteApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        repositoryRestConfiguration.exposeIdsFor(Etudiant.class);
+        repositoryRestConfiguration.exposeIdsFor(Etudiant.class, Filiere.class);
     }
 }
