@@ -2,60 +2,49 @@ package com.aziz.universite.restcontrollers;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.aziz.universite.entities.Etudiant;
 import com.aziz.universite.service.EtudiantService;
-
-import lombok.AllArgsConstructor;
 
 @RestController
 @RequestMapping("/api")
 @CrossOrigin
-@AllArgsConstructor
 public class EtudiantRESTController {
 
-    //@Autowired
-     private final EtudiantService etudiantService;
+    @Autowired
+    EtudiantService etudiantService;
 
-    @GetMapping
+    @RequestMapping(path = "all", method = RequestMethod.GET)
     public List<Etudiant> getAllEtudiants() {
         return etudiantService.getAllEtudiants();
     }
 
-    @GetMapping("/{id}")
+    @RequestMapping(value = "/getbyid/{id}", method = RequestMethod.GET)
     public Etudiant getEtudiantById(@PathVariable("id") Long id) {
         return etudiantService.getEtudiant(id);
     }
 
-    @PostMapping
+    @RequestMapping(path = "/addetud", method = RequestMethod.POST)
     public Etudiant createEtudiant(@RequestBody Etudiant etudiant) {
         return etudiantService.saveEtudiant(etudiant);
     }
 
-    @PutMapping
+    @RequestMapping(path = "/updateetud", method = RequestMethod.PUT)
     public Etudiant updateEtudiant(@RequestBody Etudiant etudiant) {
         return etudiantService.updateEtudiant(etudiant);
     }
 
-    @DeleteMapping("/{id}")
+    @RequestMapping(value = "/deletud/{id}", method = RequestMethod.DELETE)
     public void deleteEtudiant(@PathVariable("id") Long id) {
         etudiantService.deleteEtudiantById(id);
     }
 
-    @GetMapping("/etudfiliere/{idFiliere}")
-    public List<Etudiant> getEtudiantsByFiliereId(@PathVariable("idFiliere") Long idFiliere) {
+    @RequestMapping(value = "/etudfiliere/{idFiliere}", method = RequestMethod.GET)
+    public List<Etudiant> getEtudiantsByFiliere(@PathVariable("idFiliere") Long idFiliere) {
         return etudiantService.findByFiliereIdFiliere(idFiliere);
     }
 
-    @GetMapping("/etudsByName/{nom}")
+    @RequestMapping(value = "/etudsByName/{nom}", method = RequestMethod.GET)
     public List<Etudiant> findByNomEtudiantContains(@PathVariable("nom") String nom) {
         return etudiantService.findByNomEtudiantContains(nom);
     }
