@@ -2,11 +2,9 @@ package com.aziz.universite.security;
 
 import java.util.Collections;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -18,9 +16,6 @@ import org.springframework.web.cors.CorsConfigurationSource;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-
-    @Autowired
-    AuthenticationManager authMgr;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -39,16 +34,15 @@ public class SecurityConfig {
                 }
             }))
             .authorizeHttpRequests(requests ->
-                requests.requestMatchers("/login", "/register/**", "/verifyEmail/**").permitAll()
-                        .requestMatchers("/api/all/**").hasAnyAuthority("ADMIN", "USER")
+                requests.requestMatchers("/api/all/**").hasAnyAuthority("ADMIN", "USER")
                         .requestMatchers(HttpMethod.GET, "/api/getbyid/**").hasAnyAuthority("ADMIN", "USER")
                         .requestMatchers(HttpMethod.GET, "/api/etudfiliere/**").hasAnyAuthority("ADMIN", "USER")
                         .requestMatchers(HttpMethod.GET, "/api/etudsByName/**").hasAnyAuthority("ADMIN", "USER")
+                        .requestMatchers(HttpMethod.GET, "/api/fil/**").hasAnyAuthority("ADMIN", "USER")
                         .requestMatchers(HttpMethod.POST, "/api/addetud/**").hasAuthority("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/api/updateetud/**").hasAuthority("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/api/deletud/**").hasAuthority("ADMIN")
                         .anyRequest().authenticated())
-            .addFilterBefore(new JWTAuthenticationFilter(authMgr), UsernamePasswordAuthenticationFilter.class)
             .addFilterBefore(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
